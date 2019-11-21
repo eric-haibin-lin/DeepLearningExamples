@@ -157,6 +157,9 @@ def main(args):
             bert_preprocessing_command += ' --masked_lm_prob=' + str(args.masked_lm_prob)
             bert_preprocessing_command += ' --random_seed=' + str(args.random_seed)
             bert_preprocessing_command += ' --dupe_factor=' + str(args.dupe_factor)
+            if args.do_whole_word_mask:
+                bert_preprocessing_command += ' --do_whole_word_mask'
+            print(bert_preprocessing_command)
             bert_preprocessing_process = subprocess.Popen(bert_preprocessing_command, shell=True)
             bert_preprocessing_process.communicate()
 
@@ -359,6 +362,10 @@ if __name__ == "__main__":
         type=str,
         help='Specify the action you want the app to take. e.g., generate vocab, segment, create tfrecords'
     )
+
+    parser.add_argument("--do_whole_word_mask",
+                        action='store_true',
+                        help="Whether to use whole word masking rather than per-WordPiece masking.")
 
     args = parser.parse_args()
     main(args)
